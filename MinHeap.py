@@ -30,9 +30,9 @@ class MinHeap:
         return
 
     def swim(self, index):
-        while self.arr[index] < self.arr[math.floor(index/2)]:
+        while self.arr[index] < self.arr[int(math.floor(index/2))]:
             num = self.arr[index]
-            self.arr[index] = self.arr[math.floor(index/2)]
-            self.arr[math.floor(index/2)] = num
-            index = math.floor(index/2)
+            self.arr[index] = self.arr[int(math.floor(index/2))]
+            self.arr[int(math.floor(index/2))] = num
+            index = int(math.floor(index/2))
         return
