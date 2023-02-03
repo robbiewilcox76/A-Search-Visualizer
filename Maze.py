@@ -20,8 +20,8 @@ class Maze:
         self.grid[self.targetX][self.targetY] = 2 #Start = 2
         self.grid[self.startX][self.startY] = 3 #Target = 3
 
-        for i in range(1, 101):
-            for j in range(1, 101):
+        for i in range(0, 101):
+            for j in range(0, 101):
                 if (i == self.startX and j == self.startY) or (i == self.targetX and j == self.targetY):
                     continue
                 prob = random.random()
