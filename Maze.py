@@ -1,4 +1,5 @@
 import random
+import math
 
 class Maze:
     def __init__(self):
@@ -25,14 +26,19 @@ class Maze:
                     continue
                 prob = random.random()
                 if self.grid[i-1][j] == 1 or self.grid[i][j-1] == 1:
-                    if prob > .5:
+                    if prob > .6:
                         self.grid[i][j] = 1
                 else:
-                    if(prob > .7):
+                    if(prob > .8):
                         self.grid[i][j] = 1
 
+        self.manhattans = []
         for i in range(101):
-            print(self.grid[i])
+            lev = []
+            for j in range(101):
+                lev.append(abs(i-self.targetX) + abs(j-self.targetY))
+            self.manhattans.append(lev)
+        
         
 
 

@@ -5,6 +5,4 @@ import random
 
 ##file used to test min heap, give it a try and make sure it works - Robbie
 
-x = MinHeap()
-x.addNum(1)
-x.addNum(2)
+x = Maze()

@@ -4,21 +4,24 @@
 <style>
     .grid_container{
         margin-top: 0px;
+        margin-left: 0px;
+        padding: 0px 0px;
         display: inline-grid;
         background-color: black;
-        width: 99vw;
+        width: 67.3vw;
         height: 94.2vh;
         flex-wrap: wrap;
-        row-gap: 1px;
+        row-gap: 0px;
         column-gap: 1px; 
-        grid-template-columns:auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+        grid-template-columns:.6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw .6vw;
+        /* auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto; */
         grid-template-rows:auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
     }
     .column{
 
         margin-top: 0%;
-        margin-left: .1vw;
-        width:.6vw;
+        margin-left: 0%;
+        /* width:.6vw; */
         height:.8vh;
         column-gap: 1px;
         flex-wrap: wrap;
@@ -33,7 +36,7 @@
         /* margin-top: 0vh;
         margin-bottom: 0vh; */
         /* padding:.02vh .02vw; */
-        color:blue;
+        /* color:blue; */
         /* grid-row: x/span 1; 
         grid-column: y/span 1; */
     }
@@ -50,6 +53,12 @@
                 {%endif%}
                 {%if button==0%}
                 <div class="button" style="background-color:white;"></div>
+                {%endif%}
+                {%if button==3%}
+                <div class="button" style="background-color:red;"></div>
+                {%endif%}
+                {%if button==2%}
+                <div class="button" style="background-color:green;"></div>
                 {%endif%}
                 <!-- {{button}} -->
         {%endfor%}
