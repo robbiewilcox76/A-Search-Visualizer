@@ -1,40 +1,56 @@
 from States import States
 from MinHeap import MinHeap
+from Maze import Maze
 class AStar:
-    ## each initial, goal should be passed as a pair
-    def __init__(self, initial, goal, maze):
-        self.initial = initial
-        self.goal = goal
-        self.maze = maze
-        self.states = States(maze, initial, goal)
-    def execute(self):
-        current = self.initial
+    
+    @staticmethod
+    def execute(initial, goal, maze, visited):
+        current = initial
         heap = MinHeap()
         heap.addNum(current, 0)
-        counter = -1
+        counter = 0
+        print(current)
+        moves = []
         while(not heap.isEmpty()):
-            current = heap.pop() ## move object to current point
-            self.states.mark_visited(current)
+            current = heap.pop() 
+            if current[0] == goal:
+                AStar.addPath(moves, maze)
+                maze.print_maze()
+                break
+            if counter != 0:
+                moves.append(current)
+            visited[current[0][0]][current[0][1]] = 1
             counter += 1
-            possibleMoves = self.states.expand(current) ## -> return a list of pairs that I can go
-            for move in possibleMoves:
-                f_value = counter ## cost from initial to current
-                f_value += 1 ## cost from current to move
-                f_value += maze.Manhattan ## heuristic cost from move to goal
-                find_index = heap.find(move)
-                if find_index:
-                    heap.update(move, find_index, f_value)
-                else:
-                    heap.addNum(move, f_value)
-        
-            
-            
-            
-            
+            AStar.expand(visited, current, maze, heap, counter)
             
 
-            
-            
-        
-        
-                    
+    @staticmethod
+    def expand(visited, current, maze, heap, counter):
+        if current[0][0]-1 > 0:
+            if visited[current[0][0]-1][current[0][1]] != 1 and maze.grid[current[0][0]-1][current[0][1]] != 1:
+                heap.addNum((current[0][0]-1, current[0][1]), maze.manhattans[current[0][0]-1][current[0][1]] + 1)
+                if maze.grid[current[0][0]-1][current[0][1]] != 3:
+                    maze.grid[current[0][0]-1][current[0][1]] = '*'
+
+        if current[0][1]-1 > 0:
+            if visited[current[0][0]][current[0][1]-1] != 1 and maze.grid[current[0][0]][current[0][1]-1] != 1:
+                heap.addNum((current[0][0], current[0][1]-1), maze.manhattans[current[0][0]][current[0][1]-1] + 1)
+                if maze.grid[current[0][0]][current[0][1]-1] != 3:
+                    maze.grid[current[0][0]][current[0][1]-1] = '*'
+
+        if current[0][0]+1 < 101:
+            if visited[current[0][0]+1][current[0][1]] != 1 and maze.grid[current[0][0]+1][current[0][1]] != 1:
+                heap.addNum((current[0][0]+1, current[0][1]), maze.manhattans[current[0][0]+1][current[0][1]] + 1)
+                if maze.grid[current[0][0]+1][current[0][1]] != 3:
+                    maze.grid[current[0][0]+1][current[0][1]] = '*'
+
+        if current[0][1]+1 < 101:
+            if visited[current[0][0]][current[0][1]+1] != 1 and maze.grid[current[0][0]][current[0][1]+1] != 1:
+                heap.addNum((current[0][0], current[0][1]+1), maze.manhattans[current[0][0]][current[0][1]+1] + 1)
+                if maze.grid[current[0][0]][current[0][1]+1] != 3:
+                    maze.grid[current[0][0]][current[0][1]+1] = '*'
+
+    @staticmethod
+    def addPath(moves, maze):
+        for i in range(len(moves)):
+            maze.grid[moves[i][0][0]][moves[i][0][1]] = "@"
