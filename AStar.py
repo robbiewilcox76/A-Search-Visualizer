@@ -20,7 +20,7 @@ class AStar:
             for move in possibleMoves:
                 f_value = counter ## cost from initial to current
                 f_value += 1 ## cost from current to move
-                f_value += maze.Manhattan ## heuristic cost from move to goal
+                f_value += self.maze.manhattans ## heuristic cost from move to goal
                 find_index = heap.find(move)
                 if find_index:
                     heap.update(move, find_index, f_value)
