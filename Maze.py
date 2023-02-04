@@ -2,6 +2,33 @@ import random
 import math
 
 class Maze:
+
+    def prCyan(self, skk): 
+        print("\033[96m{}\033[00m" .format(skk), end = "")
+
+    def print_maze(self):
+        for i in range(103):
+            print("-", end = "")
+        print("")
+        
+        for i in range(101):
+            print("|", end = "")
+            for j in range(101):
+                if self.grid[i][j] == 1:
+                    print("#", end = "")
+                else: 
+                    if self.grid[i][j] == 0:
+                        print(" ", end = "")
+                    else: 
+                        if self.grid[i][j] == 2:
+                            self.prCyan("S")
+                        else:
+                            self.prCyan("T")
+            print("|")
+        for i in range(103):
+            print("-", end = "")
+        print("")
+
     def __init__(self):
         self.height = 101
         self.width = 101

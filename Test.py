@@ -6,3 +6,4 @@ import random
 ##file used to test min heap, give it a try and make sure it works - Robbie
 
 x = Maze()
+x.print_maze()
