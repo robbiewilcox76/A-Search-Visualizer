@@ -21,7 +21,7 @@ class Maze:
         for i in range(101):
             if i < 10: print("{}    |".format(i), end = "")
             else: 
-                if(i >= 100): print("{}  |".format(i+1), end = "")
+                if(i >= 100): print("{}  |".format(i), end = "")
                 else: print("{}   |".format(i), end = "")
             for j in range(101):
                 if self.grid[i][j] == 1:

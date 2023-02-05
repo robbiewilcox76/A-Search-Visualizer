@@ -3,8 +3,8 @@ class MinHeap:
     def __init__(self):
         self.arr = [((-1,-1),0)]
 
-    def addNum(self, move, num):
-        self.arr.append((move, num))
+    def addNum(self, move, num, parent):
+        self.arr.append((move, num, parent))
         self.swim(len(self.arr)-1)
         return
 
@@ -56,5 +56,5 @@ class MinHeap:
         for i in range(1, len(self.arr)):
             print(self.arr[i])
         print("]")
+        print(len(self.arr))
         return
-        
