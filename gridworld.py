@@ -2,7 +2,7 @@ import random
 from flask import Flask, render_template, request
 from Maze import Maze
 app = Flask(__name__)
-maze=Maze(100)
+maze=Maze(101)
 @staticmethod
 def reload(grid):
     return render_template('gridworld.html', array=grid)
@@ -45,6 +45,7 @@ def main():
             #fum+=1
         #foo+=1
 
+    global maze
     maze = Maze(101)    
     return render_template('gridworld.html', array=maze.grid)
 @app.route("/AStar")
