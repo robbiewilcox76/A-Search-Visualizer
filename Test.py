@@ -1,6 +1,7 @@
 from AStar import AStar
 from MinHeap import MinHeap
 from Maze import Maze
+from Node import Node
 import math
 import random
 
@@ -15,4 +16,6 @@ for i in range(101):
     visited.append(lvl)
 
 ## Test AStar
-AStar.execute((x.startX, x.startY), (x.targetX, x.targetY), x, visited)
+AStar.execute([x.startX, x.startY], [x.targetX, x.targetY], x, visited)
+
+#print([0, 1] == [0, 1])
