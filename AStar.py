@@ -6,6 +6,7 @@ class AStar:
     
     @staticmethod
     def execute(initial, goal, maze, visited):
+        #print(maze.grid)
         current = Node(initial, goal, 0, 0)  #current spot
         heap = MinHeap() # heap for expansion
         heap.addNode(current) #add current move to heap
@@ -62,14 +63,14 @@ class AStar:
                 if maze.grid[current.position[0]][current.position[1]-1] != 3:
                     maze.grid[current.position[0]][current.position[1]-1] = '*'
 
-        if current.position[0]+1 < 101:
+        if current.position[0]+1 < len(maze.grid):
             if visited[current.position[0]+1][current.position[1]] != 1 and maze.grid[current.position[0]+1][current.position[1]] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]+1][current.position[1]] 
                 heap.addNode(Node([current.position[0]+1, current.position[1]], current, totalCost, current.step_cost+1))
                 if maze.grid[current.position[0]+1][current.position[1]] != 3:
                     maze.grid[current.position[0]+1][current.position[1]] = '*'
 
-        if current.position[1]+1 < 101:
+        if current.position[1]+1 < len(maze.grid):
             if visited[current.position[0]][current.position[1]+1] != 1 and maze.grid[current.position[0]][current.position[1]+1] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]][current.position[1]+1] 
                 heap.addNode(Node([current.position[0], current.position[1]+1], current, totalCost, current.step_cost+1))
@@ -83,4 +84,5 @@ class AStar:
         while(curNode.position != initial):
             maze.grid[curNode.position[0]][curNode.position[1]] = '@'
             curNode = curNode.parent
-
+            #maze.print_maze()
+            #print(curNode.parent)

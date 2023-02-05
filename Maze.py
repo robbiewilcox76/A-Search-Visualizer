@@ -14,16 +14,16 @@ class Maze:
 
     def print_maze(self):
         print("     ", end = "")
-        for i in range(103):
+        for i in range(len(self.grid)+2):
             print("-", end = "")
         print("")
         
-        for i in range(101):
+        for i in range(len(self.grid)):
             if i < 10: print("{}    |".format(i), end = "")
             else: 
                 if(i >= 100): print("{}  |".format(i), end = "")
                 else: print("{}   |".format(i), end = "")
-            for j in range(101):
+            for j in range(len(self.grid)):
                 if self.grid[i][j] == 1:
                     print("#", end = "")
                 else: 
@@ -42,30 +42,30 @@ class Maze:
                                     self.prCyan("T")
             print("|")
         print("     ", end = "")
-        for i in range(103):
+        for i in range(len(self.grid)+2): #103
             print("-", end = "")
         print("")
 
-    def __init__(self):
-        self.height = 101
-        self.width = 101
+    def __init__(self, dimension):
+        self.height = dimension #101
+        self.width = dimension #101
         self.grid = []
-        for i in range(101):
+        for i in range(self.height): #101
             level = []
-            for j in range(101):
+            for j in range(self.height): #101
                 level.append(0)
             self.grid.append(level)
 
-        self.targetX = random.randint(0, 100)
-        self.targetY = random.randint(0, 100)
-        self.startX = random.randint(0, 100)
-        self.startY = random.randint(0, 100)
+        self.targetX = random.randint(0, self.height-1) #all 0, 100
+        self.targetY = random.randint(0, self.height-1)
+        self.startX = random.randint(0, self.height-1)
+        self.startY = random.randint(0, self.height-1)
 
         self.grid[self.startX][self.startY] = 2 #Start = 2
         self.grid[self.targetX][self.targetY] = 3 #Target = 3
 
-        for i in range(0, 101):
-            for j in range(0, 101):
+        for i in range(0, self.height): #101
+            for j in range(0, self.height): #101
                 if (i == self.startX and j == self.startY) or (i == self.targetX and j == self.targetY):
                     continue
                 prob = random.random()
@@ -77,16 +77,16 @@ class Maze:
                         self.grid[i][j] = 1
 
         self.manhattans = []
-        for i in range(101):
+        for i in range(self.height): #101
             lev = []
-            for j in range(101):
+            for j in range(self.height): #101
                 lev.append(abs(i-self.targetX) + abs(j-self.targetY))
             self.manhattans.append(lev)
         
         self.perceivedMap = []
-        for i in range(101):
+        for i in range(self.height): #101
             lev = []
-            for j in range(101):
+            for j in range(self.height): #101
                 lev.append(0)
             self.perceivedMap.append(lev)
     
