@@ -33,10 +33,10 @@ class Maze:
                         if self.grid[i][j] == 2:
                             self.prCyan("S")
                         else:
-                            if self.grid[i][j] == '*':
+                            if self.grid[i][j] == 6:#'*':
                                 self.prRed("*")
                             else:
-                                if self.grid[i][j] == '@':
+                                if self.grid[i][j] == 5:#'@':
                                     self.prGreen("*")
                                 else:
                                     self.prCyan("T")

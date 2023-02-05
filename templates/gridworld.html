@@ -60,11 +60,24 @@
                 {%if button==2%}
                 <div class="button" style="background-color:orange;"></div>
                 {%endif%}
+                {%if button==4%}
+                <div class="button" style="background-color:grey;"></div>
+                {%endif%}
+                {%if button==6%}
+                <div class="button" style="background-color:purple;"></div>
+                {%endif%}
+                {%if button==5%}
+                <div class="button" style="background-color:green;"></div>
+                {%endif%}
                 <!-- {{button}} -->
         {%endfor%}
 
         </div>
     {%endfor%}
     </div>
+    <form action="/AStar"> 
+        <!--method='post' value={{maze}}-->
+        <button src="/AStar">run AStar</button> 
+    </form>
 </body>
 </html>

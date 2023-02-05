@@ -2,6 +2,7 @@ from States import States
 from MinHeap import MinHeap
 from Maze import Maze
 from Node import Node
+from gridworld import reload
 class AStar:
     
     @staticmethod
@@ -41,8 +42,11 @@ class AStar:
             moves.append(current) #save move
             visited[current.position[0]][current.position[1]] = 1 #mark as visited
             counter += 1
+            reload(maze.grid)
             AStar.expand(visited, current, maze, heap, counter) #expand from spot
+        print("yea")
         maze.print_maze()
+        
         print("No solution bozo.") #no solution if heap is empty
             
 
@@ -54,35 +58,35 @@ class AStar:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]-1][current.position[1]] 
                 heap.addNode(Node([current.position[0]-1, current.position[1]], current, totalCost, current.step_cost+1))
                 if maze.grid[current.position[0]-1][current.position[1]] != 3:
-                    maze.grid[current.position[0]-1][current.position[1]] = '*'
+                    maze.grid[current.position[0]-1][current.position[1]] = 6#'*'
 
         if current.position[1]-1 >= 0:
             if visited[current.position[0]][current.position[1]-1] != 1 and maze.grid[current.position[0]][current.position[1]-1] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]][current.position[1]-1] 
                 heap.addNode(Node([current.position[0], current.position[1]-1], current, totalCost, current.step_cost+1))
                 if maze.grid[current.position[0]][current.position[1]-1] != 3:
-                    maze.grid[current.position[0]][current.position[1]-1] = '*'
+                    maze.grid[current.position[0]][current.position[1]-1] = 6#'*'
 
         if current.position[0]+1 < len(maze.grid):
             if visited[current.position[0]+1][current.position[1]] != 1 and maze.grid[current.position[0]+1][current.position[1]] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]+1][current.position[1]] 
                 heap.addNode(Node([current.position[0]+1, current.position[1]], current, totalCost, current.step_cost+1))
                 if maze.grid[current.position[0]+1][current.position[1]] != 3:
-                    maze.grid[current.position[0]+1][current.position[1]] = '*'
+                    maze.grid[current.position[0]+1][current.position[1]] = 6#'*'
 
         if current.position[1]+1 < len(maze.grid):
             if visited[current.position[0]][current.position[1]+1] != 1 and maze.grid[current.position[0]][current.position[1]+1] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]][current.position[1]+1] 
                 heap.addNode(Node([current.position[0], current.position[1]+1], current, totalCost, current.step_cost+1))
                 if maze.grid[current.position[0]][current.position[1]+1] != 3:
-                    maze.grid[current.position[0]][current.position[1]+1] = '*'
+                    maze.grid[current.position[0]][current.position[1]+1] = 6#'*'
         #heap.toString()
 
     #should print real shortest path in green, might be kind of off
     @staticmethod
     def addPath(moves, maze, initial, curNode):
         while(curNode.position != initial):
-            maze.grid[curNode.position[0]][curNode.position[1]] = '@'
+            maze.grid[curNode.position[0]][curNode.position[1]] = 5#'@'
             curNode = curNode.parent
             #maze.print_maze()
             #print(curNode.parent)
