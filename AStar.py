@@ -14,17 +14,12 @@ class AStar:
         heap.addNode(current) #add current move to heap
         counter = 0
         moves = [] #array to backtrack when solution is found
-        NodesNextToCur = []
+        NodeNextToCur = None
         while(not heap.isEmpty()):
             current = heap.pop() #pick least expensive move
             if current.position == goal:
-                NodesNextToCur.append(current) #Saves node that leads to target
-                if(heap.arr[1].total_cost >= current.total_cost): #Compares all paths to target to find lowest one
-                    lowest = NodesNextToCur[0]
-                    current = lowest
-                    for node in NodesNextToCur:
-                        if(lowest.total_cost > node.total_cost):
-                            current = node
+                NodeNextToCur = current #Saves node that leads to target
+                if heap.arr[1].total_cost >= NodeNextToCur.total_cost: #Compares all paths to target to find lowest one
                     AStar.addPath(moves, maze, initial, current.parent)
                     maze.print_maze()
                     print("Number of nodes expanded: {}".format(AStar.expandedNodes))
