@@ -4,7 +4,9 @@ from Maze import Maze
 app = Flask(__name__)
 maze=Maze(101)
 @staticmethod
+@app.route("/path")
 def reload(grid):
+    print("nay")
     return render_template('gridworld.html', array=grid)
 @app.route("/")
 def main():
@@ -49,6 +51,10 @@ def main():
     maze = Maze(101)    
     return render_template('gridworld.html', array=maze.grid)
 @app.route("/AStar")
+# def reload(grid):
+#     print("yay")
+#     render_template('gridworld.html', array=grid)
+#     return
 def AStar():
     from AStar import AStar
     x=maze
