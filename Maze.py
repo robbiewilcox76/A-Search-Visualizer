@@ -90,4 +90,3 @@ class Maze:
                 lev.append(0)
             self.perceivedMap.append(lev)
     
-        self.print_maze()

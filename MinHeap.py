@@ -5,9 +5,13 @@ class MinHeap:
         self.arr = [Node([0, 0], None, 0, 0)]
 
     def addNode(self, node: Node):
-        self.arr.append(node)
-        self.swim(len(self.arr)-1)
-        return
+        idx = self.find(node)
+        if idx:
+            self.update(idx,node)
+        else: 
+            self.arr.append(node)
+            self.swim(len(self.arr) - 1)
+            return
 
     def pop(self):
         num = self.arr[len(self.arr) - 1]
@@ -32,26 +36,27 @@ class MinHeap:
         return
 
     def swim(self, index):
-        while self.arr[index].total_cost < self.arr[int(math.floor(index/2))].total_cost:
+        while index > 0 and self.arr[index].total_cost < self.arr[index//2].total_cost:
             num = self.arr[index]
-            self.arr[index] = self.arr[int(math.floor(index/2))]
-            self.arr[int(math.floor(index/2))] = num
-            index = int(math.floor(index/2))
+            self.arr[index] = self.arr[index//2]
+            self.arr[index//2] = num
+            index = index//2
         return
     
     def isEmpty(self):
         return len(self.arr) == 1
     
-#    def find(self, move):
-#        for i in range(len(self.arr)):
-#            if move == self.arr[i][0]:
-#                return i
-#        return False
+    def find(self, node):
+       for i in range(len(self.arr)):
+           if node.position == self.arr[i].position:
+               return i
+       return False
     
-#    def update(self, index, value):
-#        if value < self.arr[index][1]:
-#            self.arr[index][1] = value
-#        self.swim(index)
+    def update(self, index, node):
+        if node.total_cost < self.arr[index].total_cost:
+           self.arr[index] = node
+           self.swim(index)
+        return
 
     def toString(self):
         print("[")

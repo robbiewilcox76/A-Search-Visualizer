@@ -9,7 +9,7 @@ class AStar:
     
     @staticmethod
     def execute(initial, goal, maze, visited):
-        current = Node(initial, goal, 0, 0)  #current spot
+        current = Node(initial, None, 0, 0)  #current spot
         heap = MinHeap() # heap for expansion
         heap.addNode(current) #add current move to heap
         counter = 0
@@ -17,23 +17,28 @@ class AStar:
         NodeNextToCur = None
         while(not heap.isEmpty()):
             current = heap.pop() #pick least expensive move
-            if current.position == goal:
-                NodeNextToCur = current #Saves node that leads to target
-                if heap.arr[1].total_cost >= NodeNextToCur.total_cost: #Compares all paths to target to find lowest one
-                    AStar.addPath(moves, maze, initial, current.parent)
-                    maze.print_maze()
-                    print("Number of nodes expanded: {}".format(AStar.expandedNodes))
-                    print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
-                    return
-                else: continue
-            moves.append(current) #save move
             visited[current.position[0]][current.position[1]] = 1 #mark as visited
+            if current.position == goal:
+                # NodeNextToCur = current #Saves node that leads to target
+                # if heap.arr[1].total_cost >= NodeNextToCur.total_cost: #Compares all paths to target to find lowest one
+                #     AStar.addPath(moves, maze, initial, current.parent)
+                #     maze.print_maze()
+                #     print("Number of nodes expanded: {}".format(AStar.expandedNodes))
+                #     print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
+                #     return
+                # else: continue
+                AStar.addPath(moves, maze, initial, current.parent)
+                maze.print_maze()
+                print("Number of nodes expanded: {}".format(AStar.expandedNodes))
+                print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
+                return
+            # moves.append(current) #save move
             counter += 1
             #reload(maze.grid)
             AStar.expand(visited, current, maze, heap, counter) #expand from spot
             AStar.expandedNodes+=1
-        maze.print_maze()
         
+        maze.print_maze()
         print("No solution bozo.") #no solution if heap is empty
         print("Number of nodes expanded: {}".format(AStar.expandedNodes))
         print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
