@@ -46,6 +46,27 @@ class Maze:
             print("-", end = "")
         print("")
 
+    def empty_maze(self):
+        self.grid = []
+        for i in range(self.width):
+            level = []
+            for j in range(self.width):
+                level.append(0)
+            self.grid.append(level)
+        self.grid[self.targetX][self.targetY] = 3
+        self.grid[self.startX][self.startY] = 2
+
+    def check_walls(self, newMaze, x, y):
+        if x+1 < self.width and self.grid[x+1][y] == 1:
+            newMaze[x+1][y] = 1
+        if y+1 > self.width and self.grid[x][y-1] == 1:
+            newMaze[x][y+1] = 1
+        if x-1 > 0 and self.grid[x-1][y] == 1:
+            newMaze[x-1][y] = 1
+        if y-1 > 0 and self.grid[x][y-1] == 1:
+            newMaze[x][y-1] = 1
+
+
     def __init__(self, dimension):
         self.height = dimension #101
         self.width = dimension #101
@@ -89,4 +110,4 @@ class Maze:
             for j in range(self.height): #101
                 lev.append(0)
             self.perceivedMap.append(lev)
-    
+        
