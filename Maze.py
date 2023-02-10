@@ -55,6 +55,17 @@ class Maze:
             self.grid.append(level)
         self.grid[self.targetX][self.targetY] = 3
         self.grid[self.startX][self.startY] = 2
+        
+    def empty_maze(self, initial, goal):
+        self.grid = []
+        for i in range(self.width):
+            level = []
+            for j in range(self.width):
+                level.append(0)
+            self.grid.append(level)
+        self.grid[goal[0]][goal[1]] = 3
+        self.grid[initial[0]][initial[1]] = 2
+
 
     def check_walls(self, newMaze, x, y):
         if x+1 < self.width and self.grid[x+1][y] == 1:
@@ -110,4 +121,9 @@ class Maze:
             for j in range(self.height): #101
                 lev.append(0)
             self.perceivedMap.append(lev)
+    
+    def walkable(self, x, y):
+        if (x >= 0 and x < self.width and y>=0 and y < self.height):
+            return self.grid[x][y] != 1
+        else: return False
         

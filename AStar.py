@@ -9,24 +9,24 @@ class AStar:
     pathNodes = 0
     
     @staticmethod
-    def execute(initial, goal, maze, visited, realMaze):
+    def execute(initial, goal, maze, visited):
         current = Node(initial, None, 0, 0)  #current spot
         heap = MinHeap() # heap for expansion
         heap.addNode(current) #add current move to heap
         counter = 0
         moves = [] #array to backtrack when solution is found
-        NodeNextToCur = None
         while(not heap.isEmpty()):
             current = heap.pop() #pick least expensive move
             visited[current.position[0]][current.position[1]] = 1 #mark as visited
             if current.position == goal:
-                nodes = AStar.testPath(maze, initial, current, realMaze)
-                print("len: {}".format(len(nodes)))
-                AStar.addPath(moves, maze, initial, current.parent, realMaze, nodes)
-                maze.print_maze()
+                moves = AStar.addPath(maze, initial, current)
                 print("Number of nodes expanded: {}".format(AStar.expandedNodes))
                 print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
-                return
+                # for move in moves:
+                #     print('(', move.position[0], ',', move.position[1], ')')
+                # print("Maze from AStar: \n")
+                # maze.print_maze()
+                return moves
             counter += 1
             AStar.expand(visited, current, maze, heap, counter) #expand from spot
             AStar.expandedNodes+=1
@@ -35,6 +35,7 @@ class AStar:
         print("No solution bozo.") #no solution if heap is empty
         print("Number of nodes expanded: {}".format(AStar.expandedNodes))
         print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
+        return []
             
     #looks complicated but all it does is add nodes that arent blocked to heap with f(n) and changes characters so they print in red
     @staticmethod
@@ -68,39 +69,18 @@ class AStar:
                 if maze.grid[current.position[0]][current.position[1]+1] != 3:
                     maze.grid[current.position[0]][current.position[1]+1] = 6#'*'
 
-    @staticmethod
-    def testPath(maze, initial, curNode, realMaze): #should test the path to find any walla for repeated A*
-        testNode = curNode
-        nodesInPath = []
-        goodPath = []
-        while(testNode.position != initial):
-            nodesInPath.append(testNode)
-            testNode = testNode.parent
-        for i in reversed(range(len(nodesInPath))):
-            goodPath.append(nodesInPath[i])
-            if realMaze.grid[nodesInPath[i].position[0]][nodesInPath[i].position[1]] == 1:
-                maze.check_walls(realMaze.grid, nodesInPath[i].position[0], nodesInPath[i].position[1])
-                return goodPath
-        return goodPath
-
 
     #should print real shortest path in green, might be kind of off
     @staticmethod
-    def addPath(moves, maze, initial, curNode, realMaze, nodes):
-    #    while(curNode.position != initial):
-    #        if realGrid[curNode.position[0]][curNode.position[1]] == 6 or realGrid[curNode.position[0]][curNode.position[1]] == 0:
-    #            maze.grid[curNode.position[0]][curNode.position[1]] = 5#'@'
-    #        else:
-    #            maze.grid[curNode.position[0]][curNode.position[1]] = 1#'@'
-    #        AStar.pathNodes+=1
-    #        curNode = curNode.parent
-
-        for i in nodes:
-            if realMaze.grid[i.position[0]][i.position[1]] == 6 or realMaze.grid[i.position[0]][i.position[1]] == 0:
-                realMaze.grid[i.position[0]][i.position[1]] = 5#'@'
-
-
-
+    def addPath(maze, initial, curNode):
+        moves = []
+        while(curNode.position != initial):
+            AStar.pathNodes+=1
+            moves.append(curNode)
+            if (maze.grid[curNode.position[0]][curNode.position[1]] != 2 and maze.grid[curNode.position[0]][curNode.position[1]] != 3):
+                maze.grid[curNode.position[0]][curNode.position[1]] = 5
+            curNode = curNode.parent
+        return moves
 
     @staticmethod
     def RepeatedAStar(initial, goal, maze, visited, realMaze): ##arr is the current maze from the agents point of view

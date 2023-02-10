@@ -19,7 +19,7 @@ for i in range(x.height):
 ## Test AStar
 
 
-AStar.execute([x.startX, x.startY], [x.targetX, x.targetY], x, visited, x)
+AStar.execute([x.startX, x.startY], [x.targetX, x.targetY], x, visited)
 # heap = MinHeap()
 # heap.addNode(Node((0,0), None, 2, 0))
 # heap.addNode(Node((0,2), None, 7, 0))
