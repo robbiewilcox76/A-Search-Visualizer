@@ -8,6 +8,16 @@ import random
 
 ##file used to test min heap, give it a try and make sure it works - Robbie
 
+def ReversePath(node: Node):
+    ptr = node
+    prev = None
+    while ptr != None:
+        next = ptr.parent
+        ptr.parent = prev
+        prev = ptr
+        ptr = next
+    return prev
+
 x = Maze(100)
 visited = []
 for i in range(x.height):
@@ -20,29 +30,22 @@ for i in range(x.height):
 
 
 AStar.execute([x.startX, x.startY], [x.targetX, x.targetY], x, visited)
-# heap = MinHeap()
-# heap.addNode(Node((0,0), None, 2, 0))
-# heap.addNode(Node((0,2), None, 7, 0))
-# heap.addNode(Node((1,2), None, 4, 0))
-# heap.addNode(Node((4,2), None, 2, 0))
-# heap.addNode(Node((2,2), None, 9, 0))
-# heap.addNode(Node((7,2), None, 3, 0))
-# heap.addNode(Node((2,4), None, 5, 0))
+x.print_maze()
+x = Node([0, 0], None, 19, 3)
+y = Node([0, 1], x, 12, 3)
+z = Node([0, 2], y, 21, 3)
+w = Node([0, 3], z, 20, 3)
+t = Node([0, 4], w, 19, 3)
+u = Node([0, 5], t, 19, 3)
 
-# heap.addNode(Node((0,0), None, 8, 0))
-# heap.addNode(Node((0,2), None, 7, 0))
-# heap.addNode(Node((1,2), None, 6, 0))
-# heap.addNode(Node((4,2), None, 5, 0))
-# heap.addNode(Node((2,2), None, 4, 0))
-# heap.addNode(Node((7,2), None, 3, 0))
-# heap.addNode(Node((2,4), None, 2, 0))
 
-# print("[")
-# for i in range(1, len(heap.arr)):
-#     print(heap.arr[i].total_cost)
-# print("]")
-
-# print(heap.pop().total_cost)
-# print(heap.pop().total_cost)
-# print(heap.pop().total_cost)
-# print(heap.pop().total_cost)
+ptr = u
+while ptr != None:
+    print(ptr.position)
+    ptr = ptr.parent
+nodee = ReversePath(u)
+print("")
+ptr = nodee
+while ptr != None:
+    print(ptr.position)
+    ptr = ptr.parent

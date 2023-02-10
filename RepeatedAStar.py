@@ -1,5 +1,6 @@
 from AStar import AStar
 from Maze import Maze
+from Node import Node
 
 dx = (0,1,0,-1)
 dy = (1,0,-1,0)
@@ -26,6 +27,17 @@ class RepeatedAStar:
         self.real_maze.print_maze()
         # Explore 4 cells adjacent to neighbor
         self.explore()
+        
+    #reverses and returns new head of LL
+    def ReversePath(node: Node):
+        ptr = node
+        prev = None
+        while ptr != None:
+            next = ptr.parent
+            ptr.parent = prev
+            prev = ptr
+            ptr = next
+        return prev
         
     def explore(self):
         for i in range(4):

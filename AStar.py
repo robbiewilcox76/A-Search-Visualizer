@@ -69,7 +69,6 @@ class AStar:
                 if maze.grid[current.position[0]][current.position[1]+1] != 3:
                     maze.grid[current.position[0]][current.position[1]+1] = 6#'*'
 
-
     #should print real shortest path in green, might be kind of off
     @staticmethod
     def addPath(maze, initial, curNode):
