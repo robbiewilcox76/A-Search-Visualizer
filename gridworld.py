@@ -57,7 +57,9 @@ def main():
 #     return
 def AStar():
     from AStar import AStar
+    global maze
     x=maze
+    AStar.pathReset(x)
     visited=[]
     for i in range(101):
         lvl = []
@@ -65,6 +67,36 @@ def AStar():
             lvl.append(0)
         visited.append(lvl)
     AStar.execute([x.startX, x.startY], [x.targetX, x.targetY], x, visited)
+    print(x.startX)
+    print(" ")
+    print(x.startY)
+    return render_template('gridworld.html', array=x.grid)
+# @app.route("/staysame")
+# def stay():
+#     global maze
+#     x=maze
+#     from AStar import AStar
+#     AStar.pathReset(x)
+#     print(x.grid)
+#     return render_template('gridworld.html', array=x.grid)
+@app.route("/ReverseA*")
+def reverse():
+    from AStar import AStar
+    global maze
+    x=maze
+    AStar.pathReset(x)
+    Maze.reverse(x)
+    visited=[]
+    for i in range(101):
+        lvl = []
+        for j in range(101):
+            lvl.append(0)
+        visited.append(lvl)
+    AStar.execute([x.startX, x.startY], [x.targetX, x.targetY], x, visited)
+    Maze.reverse(x)
+    print(x.startX)
+    print(" ")
+    print(x.startY)
     return render_template('gridworld.html', array=x.grid)
 if __name__=='__main__':
     app.run(debug=True)

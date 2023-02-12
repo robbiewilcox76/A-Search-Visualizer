@@ -114,7 +114,12 @@ class Maze:
             for j in range(self.height): #101
                 lev.append(abs(i-self.targetX) + abs(j-self.targetY))
             self.manhattans.append(lev)
-        
+        self.reverseManhattans=[]
+        # for i in range(self.height): #101
+        #     lev = []
+        #     for j in range(self.height): #101
+        #         lev.append(abs(i-self.startX) + abs(j-self.startY))
+        #     self.manhattans.append(lev)
         self.perceivedMap = []
         for i in range(self.height): #101
             lev = []
@@ -126,4 +131,18 @@ class Maze:
         if (x >= 0 and x < self.width and y>=0 and y < self.height):
             return self.grid[x][y] != 1
         else: return False
-        
+    @staticmethod
+    def reverse(self):
+        x=self.startX
+        self.startX=self.targetX
+        self.targetX=x
+        x=self.startY
+        self.startY=self.targetY
+        self.targetY=x
+        self.reverseManhattans=self.manhattans
+        self.manhattans = []
+        for i in range(self.height): #101
+            lev = []
+            for j in range(self.height): #101
+                lev.append(abs(i-self.targetX) + abs(j-self.targetY))
+            self.manhattans.append(lev)

@@ -44,31 +44,60 @@ class AStar:
             if visited[current.position[0]-1][current.position[1]] != 1 and maze.grid[current.position[0]-1][current.position[1]] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]-1][current.position[1]] 
                 heap.addNode(Node([current.position[0]-1, current.position[1]], current, totalCost, current.step_cost+1))
-                if maze.grid[current.position[0]-1][current.position[1]] != 3:
+                if maze.grid[current.position[0]-1][current.position[1]] != 3 and maze.grid[current.position[0]-1][current.position[1]] != 2:
                     maze.grid[current.position[0]-1][current.position[1]] = 6#'*'
 
         if current.position[1]-1 >= 0:
             if visited[current.position[0]][current.position[1]-1] != 1 and maze.grid[current.position[0]][current.position[1]-1] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]][current.position[1]-1] 
                 heap.addNode(Node([current.position[0], current.position[1]-1], current, totalCost, current.step_cost+1))
-                if maze.grid[current.position[0]][current.position[1]-1] != 3:
+                if maze.grid[current.position[0]][current.position[1]-1] != 3 and maze.grid[current.position[0]][current.position[1]-1] != 2:
                     maze.grid[current.position[0]][current.position[1]-1] = 6#'*'
 
         if current.position[0]+1 < len(maze.grid):
             if visited[current.position[0]+1][current.position[1]] != 1 and maze.grid[current.position[0]+1][current.position[1]] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]+1][current.position[1]] 
                 heap.addNode(Node([current.position[0]+1, current.position[1]], current, totalCost, current.step_cost+1))
-                if maze.grid[current.position[0]+1][current.position[1]] != 3:
+                if maze.grid[current.position[0]+1][current.position[1]] != 3 and maze.grid[current.position[0]+1][current.position[1]] != 2:
                     maze.grid[current.position[0]+1][current.position[1]] = 6#'*'
 
         if current.position[1]+1 < len(maze.grid):
             if visited[current.position[0]][current.position[1]+1] != 1 and maze.grid[current.position[0]][current.position[1]+1] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]][current.position[1]+1] 
                 heap.addNode(Node([current.position[0], current.position[1]+1], current, totalCost, current.step_cost+1))
-
-                if maze.grid[current.position[0]][current.position[1]+1] != 3:
+                if maze.grid[current.position[0]][current.position[1]+1] != 3 and maze.grid[current.position[0]][current.position[1]+1] != 2:
                     maze.grid[current.position[0]][current.position[1]+1] = 6#'*'
 
+    # @staticmethod
+    # def reverseExpand(visited, current, maze, heap, counter): 
+    #     if current.position[0]-1 >= 0:
+    #         if visited[current.position[0]-1][current.position[1]] != 1 and maze.grid[current.position[0]-1][current.position[1]] != 1:
+    #             totalCost = current.step_cost + 1 + maze.reverseManhattans[current.position[0]-1][current.position[1]] 
+    #             heap.addNode(Node([current.position[0]-1, current.position[1]], current, totalCost, current.step_cost+1))
+    #             if maze.grid[current.position[0]-1][current.position[1]] != 2:
+    #                 maze.grid[current.position[0]-1][current.position[1]] = 6#'*'
+
+    #     if current.position[1]-1 >= 0:
+    #         if visited[current.position[0]][current.position[1]-1] != 1 and maze.grid[current.position[0]][current.position[1]-1] != 1:
+    #             totalCost = current.step_cost + 1 + maze.reverseManhattans[current.position[0]][current.position[1]-1] 
+    #             heap.addNode(Node([current.position[0], current.position[1]-1], current, totalCost, current.step_cost+1))
+    #             if maze.grid[current.position[0]][current.position[1]-1] != 2:
+    #                 maze.grid[current.position[0]][current.position[1]-1] = 6#'*'
+
+    #     if current.position[0]+1 < len(maze.grid):
+    #         if visited[current.position[0]+1][current.position[1]] != 1 and maze.grid[current.position[0]+1][current.position[1]] != 1:
+    #             totalCost = current.step_cost + 1 + maze.reverseManhattans[current.position[0]+1][current.position[1]] 
+    #             heap.addNode(Node([current.position[0]+1, current.position[1]], current, totalCost, current.step_cost+1))
+    #             if maze.grid[current.position[0]+1][current.position[1]] != 2:
+    #                 maze.grid[current.position[0]+1][current.position[1]] = 6#'*'
+
+    #     if current.position[1]+1 < len(maze.grid):
+    #         if visited[current.position[0]][current.position[1]+1] != 1 and maze.grid[current.position[0]][current.position[1]+1] != 1:
+    #             totalCost = current.step_cost + 1 + maze.reverseManhattans[current.position[0]][current.position[1]+1] 
+    #             heap.addNode(Node([current.position[0], current.position[1]+1], current, totalCost, current.step_cost+1))
+
+    #             if maze.grid[current.position[0]][current.position[1]+1] != 2:
+    #                 maze.grid[current.position[0]][current.position[1]+1] = 6#'*'
     #should print real shortest path in green, might be kind of off
     @staticmethod
     def addPath(maze, initial, curNode):
@@ -89,3 +118,10 @@ class AStar:
         visited = [[0 for i in range(101)] for j in range(101)] #creates visited array
         AStar.execute(initial, goal, newMaze, visited, realMaze)
         maze.print_maze()
+    @staticmethod
+    def pathReset(array):
+        for i in range(0,101):
+            # print(i)
+            for j in range(0,101):
+                if array.grid[i][j]==5 or array.grid[i][j]==6:
+                    array.grid[i][j]=0
