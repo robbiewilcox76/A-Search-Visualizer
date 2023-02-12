@@ -1,6 +1,7 @@
 from AStar import AStar
 from Maze import Maze
 from Node import Node
+import copy
 
 dx = (0,1,0,-1)
 dy = (1,0,-1,0)
@@ -13,31 +14,11 @@ class RepeatedAStar:
         self.maze_size = maze_size
         self.maze = Maze(maze_size)
         self.maze.empty_maze(initial, goal)
-        visited = []
-        for i in range(maze_size):
-            lvl = []
-            for j in range(maze_size):
-                lvl.append(0)
-            visited.append(lvl)
             
-        self.visited = visited
-        print("Perceived Maze: \n")
-        self.maze.print_maze()
         print("Real maze : \n")
         self.real_maze.print_maze()
         # Explore 4 cells adjacent to neighbor
         self.explore()
-        
-    #reverses and returns new head of LL
-    def ReversePath(node: Node):
-        ptr = node
-        prev = None
-        while ptr != None:
-            next = ptr.parent
-            ptr.parent = prev
-            prev = ptr
-            ptr = next
-        return prev
         
     def explore(self):
         for i in range(4):
@@ -51,21 +32,22 @@ class RepeatedAStar:
             #         self.maze.grid[newX][newY] = 6
         
     def execute(self):
-        if self.current == self.goal: return
+        if self.current == self.goal: 
+            print("REACHED THE GOAL")
+            return
         # Get shortest path based on maze that object perceived
-        moves = []
-        moves = AStar.execute(self.current, self.goal, self.maze, self.visited)
-        # print("Moves in RepeatedAStar is :\n", moves)
-        self.visualizeAStar(moves)
-        if (moves): 
-            # list of moves not empty
-            moves.reverse()
-            move = moves.pop()
+        DummyMaze = self.copyMaze()
+        DummyVisited = self.newVisited()
+        # move is pointer to shortest path linkedlist
+        move = AStar.execute(self.current, self.goal, DummyMaze, DummyVisited)
+        self.visualizeAStar(move)
+        if (move): 
             nextX = move.position[0]
             nextY = move.position[1]
             walkable = self.real_maze.walkable(nextX, nextY)
-            counter = 1
             while (walkable):
+                # Mark current position to be empty
+                self.maze.grid[self.current[0]][self.current[1]] = 0
                 # Take walk
                 self.current[0] = nextX
                 self.current[1] = nextY
@@ -74,25 +56,49 @@ class RepeatedAStar:
                 # Take note of the current map
                 self.explore()
                 # Examine next move / Return if out of moves
-                if (not moves): return
-                move = moves.pop()
+                if (not move.parent): 
+                    if self.current == self.goal: 
+                        self.maze.print_maze()
+                        print("REACHED THE GOAL")
+                    return
+                move = move.parent
                 nextX = move.position[0]
                 nextY = move.position[1]
-                walkable = self.real_maze.walkable(nextX, nextY) 
-                print(counter, " walkable is: ", walkable)
-            # Execute until reach the goal
+                walkable = self.real_maze.walkable(nextX, nextY)
+            # Execute until reach the goal OR not walkable (approach obstacles)
+            self.maze.print_maze()
+            self.clearMazePath()
             self.execute()
             
         else:
             print("No Solution")
             return
         
-    def visualizeAStar(self, moves):
-        x = self.maze
-        for move in moves:
-            if (x.grid[move.position[0]][move.position[1]] != 2 and x.grid[move.position[0]][move.position[1]] != 3):
-                x.grid[move.position[0]][move.position[1]] = 5
+    def visualizeAStar(self, move):
+        while (move):
+            if (self.maze.grid[move.position[0]][move.position[1]] != 2 and self.maze.grid[move.position[0]][move.position[1]] != 3):
+                self.maze.grid[move.position[0]][move.position[1]] = 5
+            move = move.parent
             
-        x.print_maze()
+        self.maze.print_maze()
+    
+    def copyMaze(self):
+        dummyMaze = copy.deepcopy(self.maze)
+        return dummyMaze
+
+    def newVisited(self):
+        visited = []
+        for i in range(self.maze_size):
+            lvl = []
+            for j in range(self.maze_size):
+                lvl.append(0)
+            visited.append(lvl)
+        return visited
+    
+    def clearMazePath(self):
+        for i in range(self.maze_size):
+            for j in range(self.maze_size):
+                if self.maze.grid[i][j] == 5:
+                    self.maze.grid[i][j] = 0
         
         

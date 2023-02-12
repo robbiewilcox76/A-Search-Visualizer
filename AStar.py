@@ -14,7 +14,6 @@ class AStar:
         heap = MinHeap() # heap for expansion
         heap.addNode(current) #add current move to heap
         counter = 0
-        moves = [] #array to backtrack when solution is found
         while(not heap.isEmpty()):
             current = heap.pop() #pick least expensive move
             visited[current.position[0]][current.position[1]] = 1 #mark as visited
@@ -101,14 +100,17 @@ class AStar:
     #should print real shortest path in green, might be kind of off
     @staticmethod
     def addPath(maze, initial, curNode):
-        moves = []
+        # Visualize maze
+        saveNode = curNode
         while(curNode.position != initial):
             AStar.pathNodes+=1
-            moves.append(curNode)
             if (maze.grid[curNode.position[0]][curNode.position[1]] != 2 and maze.grid[curNode.position[0]][curNode.position[1]] != 3):
                 maze.grid[curNode.position[0]][curNode.position[1]] = 5
             curNode = curNode.parent
-        return moves
+        
+        # reverse linkedlist and return
+        ptr_from_start = AStar.reversePath(saveNode)
+        return ptr_from_start
 
     @staticmethod
     def RepeatedAStar(initial, goal, maze, visited, realMaze): ##arr is the current maze from the agents point of view
@@ -125,3 +127,14 @@ class AStar:
             for j in range(0,101):
                 if array.grid[i][j]==5 or array.grid[i][j]==6:
                     array.grid[i][j]=0
+                    
+    @staticmethod        
+    def reversePath(node: Node):
+        ptr = node
+        prev = None
+        while ptr != None:
+            next = ptr.parent
+            ptr.parent = prev
+            prev = ptr
+            ptr = next
+        return prev
