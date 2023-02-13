@@ -9,7 +9,7 @@ import random
 
 ##file used to test min heap, give it a try and make sure it works - Robbie
 
-maze_size = 100
+maze_size = 101
 x = Maze(maze_size)
 visited = []
 for i in range(x.height):
@@ -21,4 +21,8 @@ for i in range(x.height):
 ## Test RepeatedAStar
 
 find = RepeatedAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
+#print("\n")
+#for i in range(x.height):
+#    print(x.manhattans[i])
+#
 find.execute()

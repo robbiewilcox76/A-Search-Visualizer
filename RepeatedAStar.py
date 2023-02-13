@@ -7,6 +7,9 @@ dx = (0,1,0,-1)
 dy = (1,0,-1,0)
 
 class RepeatedAStar:
+
+    expandedNodes = 0
+
     def __init__(self, initial, goal, real_maze, maze_size):
         self.current = initial
         self.goal = goal
@@ -15,8 +18,8 @@ class RepeatedAStar:
         self.maze = Maze(maze_size)
         self.maze.empty_maze(initial, goal)
             
-        print("Real maze : \n")
-        self.real_maze.print_maze()
+        #print("Real maze : \n")
+        #self.real_maze.print_maze()
         # Explore 4 cells adjacent to neighbor
         self.explore()
         
@@ -32,14 +35,23 @@ class RepeatedAStar:
             #         self.maze.grid[newX][newY] = 6
         
     def execute(self):
+        manhattans = self.real_maze.manhattans
         if self.current == self.goal: 
             print("REACHED THE GOAL")
+            print("Total nodes expanded {}".format(RepeatedAStar.expandedNodes))
             return
         # Get shortest path based on maze that object perceived
         DummyMaze = self.copyMaze()
+        DummyMaze.manhattans = manhattans
         DummyVisited = self.newVisited()
         # move is pointer to shortest path linkedlist
         move = AStar.execute(self.current, self.goal, DummyMaze, DummyVisited)
+        RepeatedAStar.expandedNodes += AStar.expandedNodes
+        #DummyMaze.print_maze()
+        #for i in range(DummyMaze.height):
+        #    print(DummyMaze.manhattans[i])
+        #return
+        AStar.expandedNodes = 0
         # self.visualizeAStar(move)
         if (move): 
             nextX = move.position[0]
@@ -60,6 +72,7 @@ class RepeatedAStar:
                     if self.current == self.goal: 
                         # self.maze.print_maze()
                         print("REACHED THE GOAL")
+                        print("Total nodes expanded {}".format(RepeatedAStar.expandedNodes))
                     return
                 move = move.parent
                 nextX = move.position[0]
@@ -80,7 +93,7 @@ class RepeatedAStar:
                 self.maze.grid[move.position[0]][move.position[1]] = 5
             move = move.parent
             
-        self.maze.print_maze()
+        #elf.maze.print_maze()
     
     def copyMaze(self):
         dummyMaze = copy.deepcopy(self.maze)
