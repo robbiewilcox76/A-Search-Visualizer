@@ -10,6 +10,8 @@ class AStar:
     
     @staticmethod
     def execute(initial, goal, maze, visited):
+        AStar.expandedNodes = -1
+        AStar.pathNodes = 0    
         current = Node(initial, None, 0, 0)  #current spot
         heap = MinHeap() # heap for expansion
         heap.addNode(current) #add current move to heap

@@ -40,7 +40,7 @@ class RepeatedAStar:
         DummyVisited = self.newVisited()
         # move is pointer to shortest path linkedlist
         move = AStar.execute(self.current, self.goal, DummyMaze, DummyVisited)
-        self.visualizeAStar(move)
+        # self.visualizeAStar(move)
         if (move): 
             nextX = move.position[0]
             nextY = move.position[1]
@@ -58,7 +58,7 @@ class RepeatedAStar:
                 # Examine next move / Return if out of moves
                 if (not move.parent): 
                     if self.current == self.goal: 
-                        self.maze.print_maze()
+                        # self.maze.print_maze()
                         print("REACHED THE GOAL")
                     return
                 move = move.parent
@@ -66,7 +66,7 @@ class RepeatedAStar:
                 nextY = move.position[1]
                 walkable = self.real_maze.walkable(nextX, nextY)
             # Execute until reach the goal OR not walkable (approach obstacles)
-            self.maze.print_maze()
+            # self.maze.print_maze()
             self.clearMazePath()
             self.execute()
             
