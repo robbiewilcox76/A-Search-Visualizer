@@ -1,7 +1,13 @@
 import random
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from Maze import Maze
 app = Flask(__name__)
+maze=Maze(101)
+@staticmethod
+@app.route("/path")
+def reload(grid):
+    print("nay")
+    return render_template('gridworld.html', array=grid)
 @app.route("/")
 def main():
     # x=0
@@ -41,10 +47,9 @@ def main():
             #fum+=1
         #foo+=1
 
-    maze = Maze()    
+    global maze
+    maze = Maze(101)    
     return render_template('gridworld.html', array=maze.grid)
-<<<<<<< Updated upstream
-=======
 @app.route("/AStar")
 # def reload(grid):
 #     print("yay")
@@ -111,6 +116,5 @@ def adapt():
     print(" ")
     print(x.startY)
     return render_template('gridworld.html', array=x.grid)
->>>>>>> Stashed changes
 if __name__=='__main__':
     app.run(debug=True)
