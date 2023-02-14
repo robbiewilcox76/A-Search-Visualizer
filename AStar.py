@@ -5,12 +5,15 @@ from Node import Node
 from gridworld import reload
 import copy
 class AStar:
-    expandedNodes = -1
+    targNode = None
+    expandedNodes = 0
     pathNodes = 0
+    expandedArr = []
     
     @staticmethod
     def execute(initial, goal, maze, visited):
-        AStar.expandedNodes = -1
+        AStar.expandedArr = []
+        AStar.expandedNodes = 0
         AStar.pathNodes = 0    
         current = Node(initial, None, 0, 0)  #current spot
         heap = MinHeap() # heap for expansion
@@ -20,22 +23,29 @@ class AStar:
             current = heap.pop() #pick least expensive move
             visited[current.position[0]][current.position[1]] = 1 #mark as visited
             if current.position == goal:
-                moves = AStar.addPath(maze, initial, current)
-                print("Number of nodes expanded: {}".format(AStar.expandedNodes))
-                print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
+                AStar.targNode = current
+                #path = AStar.listMoves(current, initial)
+                move = AStar.addPath(maze, initial, current)
+                #for i in range(len(AStar.expandedArr)):
+                #    print(AStar.expandedArr[i].position)
+                #print(AStar.targNode.position)
+                #print(goal)
+                ##print("Number of nodes expanded: {}".format(AStar.expandedNodes))
+                ##print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
                 # for move in moves:
                 #     print('(', move.position[0], ',', move.position[1], ')')
                 # print("Maze from AStar: \n")
                 # maze.print_maze()
-                return moves
+                return move
             counter += 1
             AStar.expand(visited, current, maze, heap, counter) #expand from spot
             AStar.expandedNodes+=1
+            AStar.expandedArr.append(current)
         
-        maze.print_maze()
-        print("No solution bozo.") #no solution if heap is empty
-        print("Number of nodes expanded: {}".format(AStar.expandedNodes))
-        print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
+        ##maze.print_maze()
+        ##print("No solution bozo.") #no solution if heap is empty
+        ##print("Number of nodes expanded: {}".format(AStar.expandedNodes))
+        ##print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
         return []
             
     #looks complicated but all it does is add nodes that arent blocked to heap with f(n) and changes characters so they print in red
@@ -45,6 +55,7 @@ class AStar:
             if visited[current.position[0]-1][current.position[1]] != 1 and maze.grid[current.position[0]-1][current.position[1]] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]-1][current.position[1]] 
                 heap.addNode(Node([current.position[0]-1, current.position[1]], current, totalCost, current.step_cost+1))
+                #AStar.expandedArr.append(Node([current.position[0]-1, current.position[1]], current, totalCost, current.step_cost+1))
                 if maze.grid[current.position[0]-1][current.position[1]] != 3 and maze.grid[current.position[0]-1][current.position[1]] != 2:
                     maze.grid[current.position[0]-1][current.position[1]] = 6#'*'
 
@@ -52,6 +63,7 @@ class AStar:
             if visited[current.position[0]][current.position[1]-1] != 1 and maze.grid[current.position[0]][current.position[1]-1] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]][current.position[1]-1] 
                 heap.addNode(Node([current.position[0], current.position[1]-1], current, totalCost, current.step_cost+1))
+                #AStar.expandedArr.append(Node([current.position[0], current.position[1]-1], current, totalCost, current.step_cost+1))
                 if maze.grid[current.position[0]][current.position[1]-1] != 3 and maze.grid[current.position[0]][current.position[1]-1] != 2:
                     maze.grid[current.position[0]][current.position[1]-1] = 6#'*'
 
@@ -59,6 +71,7 @@ class AStar:
             if visited[current.position[0]+1][current.position[1]] != 1 and maze.grid[current.position[0]+1][current.position[1]] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]+1][current.position[1]] 
                 heap.addNode(Node([current.position[0]+1, current.position[1]], current, totalCost, current.step_cost+1))
+                #AStar.expandedArr.append(Node([current.position[0]+1, current.position[1]], current, totalCost, current.step_cost+1))
                 if maze.grid[current.position[0]+1][current.position[1]] != 3 and maze.grid[current.position[0]+1][current.position[1]] != 2:
                     maze.grid[current.position[0]+1][current.position[1]] = 6#'*'
 
@@ -66,6 +79,7 @@ class AStar:
             if visited[current.position[0]][current.position[1]+1] != 1 and maze.grid[current.position[0]][current.position[1]+1] != 1:
                 totalCost = current.step_cost + 1 + maze.manhattans[current.position[0]][current.position[1]+1] 
                 heap.addNode(Node([current.position[0], current.position[1]+1], current, totalCost, current.step_cost+1))
+                #AStar.expandedArr.append(Node([current.position[0], current.position[1]+1], current, totalCost, current.step_cost+1))
                 if maze.grid[current.position[0]][current.position[1]+1] != 3 and maze.grid[current.position[0]][current.position[1]+1] != 2:
                     maze.grid[current.position[0]][current.position[1]+1] = 6#'*'
 
@@ -103,12 +117,14 @@ class AStar:
     @staticmethod
     def addPath(maze, initial, curNode):
         # Visualize maze
+        if curNode == None: return
         saveNode = curNode
         while(curNode.position != initial):
             AStar.pathNodes+=1
             if (maze.grid[curNode.position[0]][curNode.position[1]] != 2 and maze.grid[curNode.position[0]][curNode.position[1]] != 3):
                 maze.grid[curNode.position[0]][curNode.position[1]] = 5
             curNode = curNode.parent
+            if curNode == None: return
         
         # reverse linkedlist and return
         ptr_from_start = AStar.reversePath(saveNode)
@@ -140,3 +156,12 @@ class AStar:
             prev = ptr
             ptr = next
         return prev
+    
+    @staticmethod 
+    def listMoves(curNode: Node, initial):
+        arr = []
+        ptr = curNode
+        while(ptr.position != initial):
+            arr.append(ptr)
+            ptr = ptr.parent
+        return arr

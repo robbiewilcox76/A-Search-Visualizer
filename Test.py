@@ -2,6 +2,7 @@ from AStar import AStar
 from MinHeap import MinHeap
 from Maze import Maze
 from Node import Node
+from RepeatedAStar import RepeatedAStar
 import math
 import random
 
@@ -18,7 +19,7 @@ def ReversePath(node: Node):
         ptr = next
     return prev
 
-x = Maze(100)
+x = Maze(10)
 visited = []
 for i in range(x.height):
     lvl = []
@@ -28,24 +29,34 @@ for i in range(x.height):
 
 ## Test AStar
 
-
-AStar.execute([x.startX, x.startY], [x.targetX, x.targetY], x, visited)
-x.print_maze()
-x = Node([0, 0], None, 19, 3)
-y = Node([0, 1], x, 12, 3)
-z = Node([0, 2], y, 21, 3)
-w = Node([0, 3], z, 20, 3)
-t = Node([0, 4], w, 19, 3)
-u = Node([0, 5], t, 19, 3)
-
-
-ptr = u
-while ptr != None:
-    print(ptr.position)
-    ptr = ptr.parent
-nodee = ReversePath(u)
-print("")
-ptr = nodee
-while ptr != None:
-    print(ptr.position)
-    ptr = ptr.parent
+vanilla_total = 0
+forward_repeated_total = 0
+for i in range(1):
+    x = Maze(10)
+    visited = []
+    for i in range(x.height):
+        lvl = []
+        for j in range(x.height):
+            lvl.append(0)
+        visited.append(lvl)
+    x.reverse()
+    moves = AStar.execute([x.startX, x.startY], [x.targetX, x.targetY], x, visited)
+    x.print_maze()
+    visited = []
+    for i in range(x.height):
+        lvl = []
+        for j in range(x.height):
+            lvl.append(0)
+        visited.append(lvl)
+    vanilla_total += AStar.expandedNodes
+    AStar.expandedNodes = 0
+    #RepeatedAStar([x.startX, x.startY], [x.targetX, x.targetY], x, 101).execute()
+    forward_repeated_total += RepeatedAStar.expandedNodes
+    #RepeatedAStar.expandedNodes = 0
+    #x.print_maze()
+    #x.reverse()
+    #x.print_maze()
+print("Forward: {}\n Repeated: {}".format(vanilla_total, forward_repeated_total/50))
+print(len(AStar.expandedArr))
+for i in range(len(AStar.expandedArr)):
+    print(AStar.expandedArr[i])

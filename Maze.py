@@ -131,7 +131,7 @@ class Maze:
         if (x >= 0 and x < self.width and y>=0 and y < self.height):
             return self.grid[x][y] != 1
         else: return False
-    @staticmethod
+    
     def reverse(self):
         x=self.startX
         self.startX=self.targetX
@@ -141,6 +141,8 @@ class Maze:
         self.targetY=x
         self.reverseManhattans=self.manhattans
         self.manhattans = []
+        self.grid[self.startX][self.startY] = 2 #Start = 2
+        self.grid[self.targetX][self.targetY] = 3 #Target = 3
         for i in range(self.height): #101
             lev = []
             for j in range(self.height): #101

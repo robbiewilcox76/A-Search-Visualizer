@@ -6,11 +6,11 @@ import copy
 dx = (0,1,0,-1)
 dy = (1,0,-1,0)
 
-class RepeatedAStar:
-
+class AdaptiveAStar:
     expandedNodes = 0
 
     def __init__(self, initial, goal, real_maze, maze_size):
+        self.prevManhattans = real_maze.manhattans
         self.current = initial
         self.goal = goal
         self.real_maze = real_maze
@@ -34,25 +34,29 @@ class RepeatedAStar:
             #     if (self.maze.grid[newX][newY] != 2 and self.maze.grid[newX][newY] != 3): 
             #         self.maze.grid[newX][newY] = 6
         
-    def execute(self):
-        manhattans = self.real_maze.manhattans
+    def execute(self, manhattans):
         if self.current == self.goal: 
-            #print("REACHED THE GOAL")
-            #print("Total nodes expanded {}".format(RepeatedAStar.expandedNodes))
+            print("REACHED THE GOAL")
+            print("Total nodes expanded {}".format(AdaptiveAStar.expandedNodes))
             return
         # Get shortest path based on maze that object perceived
         DummyMaze = self.copyMaze()
         DummyMaze.manhattans = manhattans
+
+        #if AStar.targNode != None: print("Cost: {}".format(AStar.targNode.step_cost))
+        for i in range(1, len(AStar.expandedArr)):
+            #print("{}".format(AStar.targNode.step_cost - AStar.expandedArr[i].step_cost == DummyMaze.manhattans[AStar.expandedArr[i].position[0]][AStar.expandedArr[i].position[1]]))
+            DummyMaze.manhattans[AStar.expandedArr[i].position[0]][AStar.expandedArr[i].position[1]] = AStar.targNode.step_cost - AStar.expandedArr[i].step_cost
+        AStar.expandedArr = []
         DummyVisited = self.newVisited()
+
+        #for i in range(len(DummyMaze.manhattans)):
+         #   print(DummyMaze.manhattans[i])
+
+        #print(manhattans == self.real_maze.manhattans)
         # move is pointer to shortest path linkedlist
         move = AStar.execute(self.current, self.goal, DummyMaze, DummyVisited)
-        #print(move)
-        RepeatedAStar.expandedNodes += AStar.expandedNodes
-        #DummyMaze.print_maze()
-        #for i in range(DummyMaze.height):
-        #    print(DummyMaze.manhattans[i])
-        #return
-        AStar.expandedNodes = 0
+        AdaptiveAStar.expandedNodes += AStar.expandedNodes
         self.visualizeAStar(move)
         if (move): 
             nextX = move.position[0]
@@ -72,8 +76,8 @@ class RepeatedAStar:
                 if (not move.parent): 
                     if self.current == self.goal: 
                         #self.maze.print_maze()
-                        #print("REACHED THE GOAL")
-                        #print("Total nodes expanded {}".format(RepeatedAStar.expandedNodes))
+                        print("REACHED THE GOAL")
+                        #print("Total nodes expanded {}".format(AdaptiveAStar.expandedNodes))
                         return
                 move = move.parent
                 nextX = move.position[0]
@@ -82,7 +86,7 @@ class RepeatedAStar:
             # Execute until reach the goal OR not walkable (approach obstacles)
             #self.maze.print_maze()
             self.clearMazePath()
-            self.execute()
+            self.execute(DummyMaze.manhattans)
             
         else:
             #print("No Solution")
