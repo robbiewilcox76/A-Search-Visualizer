@@ -34,7 +34,7 @@ class RepeatedAStar:
             #     if (self.maze.grid[newX][newY] != 2 and self.maze.grid[newX][newY] != 3): 
             #         self.maze.grid[newX][newY] = 6
         
-    def execute(self):
+    def execute(self, maze):
         manhattans = self.real_maze.manhattans
         if self.current == self.goal: 
             #print("REACHED THE GOAL")
@@ -66,6 +66,8 @@ class RepeatedAStar:
                 self.current[1] = nextY
                 # Mark walk step where object has moved
                 self.maze.grid[self.current[0]][self.current[1]] = 2
+                if maze.grid[nextX][nextY]!=2 and maze.grid[nextX][nextY]!=3:
+                    maze.grid[nextX][nextY]=5
                 # Take note of the current map
                 self.explore()
                 # Examine next move / Return if out of moves
@@ -74,7 +76,7 @@ class RepeatedAStar:
                         #self.maze.print_maze()
                         #print("REACHED THE GOAL")
                         #print("Total nodes expanded {}".format(RepeatedAStar.expandedNodes))
-                        return
+                        return move
                 move = move.parent
                 nextX = move.position[0]
                 nextY = move.position[1]
@@ -82,7 +84,7 @@ class RepeatedAStar:
             # Execute until reach the goal OR not walkable (approach obstacles)
             #self.maze.print_maze()
             self.clearMazePath()
-            self.execute()
+            self.execute(maze)
             
         else:
             #print("No Solution")

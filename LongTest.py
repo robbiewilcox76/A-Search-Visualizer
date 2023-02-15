@@ -29,14 +29,14 @@ for i in range(ran):
     adaptForward = AdaptiveAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
     repeatForward = RepeatedAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
 
-    repeatForward.execute()
+    repeatForward.execute(x)
     reFor += RepeatedAStar.expandedNodes
     AStar.expandedNodes = 0
     RepeatedAStar.expandedNodes = 0
     AdaptiveAStar.expandedNodes = 0
 
     #AStar.pathReset(x)
-    adaptForward.execute(x.manhattans)
+    adaptForward.execute(x.manhattans, x)
     aFor += AdaptiveAStar.expandedNodes
     AStar.expandedNodes = 0
     RepeatedAStar.expandedNodes = 0
@@ -47,14 +47,14 @@ for i in range(ran):
     adaptBackWard = AdaptiveAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
     repeatBackward = RepeatedAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
 
-    repeatBackward.execute()
+    repeatBackward.execute(x)
     reBack += RepeatedAStar.expandedNodes
     AStar.expandedNodes = 0
     RepeatedAStar.expandedNodes = 0
     AdaptiveAStar.expandedNodes = 0
 
     #AStar.pathReset(x)
-    adaptBackWard.execute(x.manhattans)
+    adaptBackWard.execute(x.manhattans,x)
     aBack += AdaptiveAStar.expandedNodes
 
 

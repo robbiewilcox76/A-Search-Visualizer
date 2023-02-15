@@ -98,5 +98,38 @@ def reverse():
     print(" ")
     print(x.startY)
     return render_template('gridworld.html', array=x.grid)
+@app.route("/adaptiveA*")
+def adapt():
+    from AdaptiveAStar import AdaptiveAStar
+    from AStar import AStar
+    global maze
+    x=maze
+    AStar.pathReset(x)
+    # visited=[]
+    # for i in range(101):
+    #     lvl = []
+    #     for j in range(101):
+    #         lvl.append(0)
+    #     visited.append(lvl)
+    astar=AdaptiveAStar([x.startX, x.startY], [x.targetX, x.targetY], x, 101)
+    AdaptiveAStar.execute(astar, x.manhattans, x)
+    print(AdaptiveAStar.expandedNodes)
+    AdaptiveAStar.expandedNodes=0
+    # print(x.startX)
+    # print(" ")
+    # print(x.startY)
+    return render_template('gridworld.html', array=x.grid)
+@app.route("/repeatedAStar")
+def repeat():
+    from RepeatedAStar import RepeatedAStar
+    from AStar import AStar
+    global maze
+    x=maze
+    AStar.pathReset(x)
+    astar=RepeatedAStar([x.startX, x.startY], [x.targetX, x.targetY], x, 101)
+    RepeatedAStar.execute(astar, x)
+    print(RepeatedAStar.expandedNodes)
+    RepeatedAStar.expandedNodes=0
+    return render_template('gridworld.html', array=x.grid)
 if __name__=='__main__':
     app.run(debug=True)

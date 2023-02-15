@@ -8,7 +8,7 @@ dy = (1,0,-1,0)
 
 class AdaptiveAStar:
     expandedNodes = 0
-
+    
     def __init__(self, initial, goal, real_maze, maze_size):
         self.prevManhattans = real_maze.manhattans
         self.current = initial
@@ -34,15 +34,17 @@ class AdaptiveAStar:
             #     if (self.maze.grid[newX][newY] != 2 and self.maze.grid[newX][newY] != 3): 
             #         self.maze.grid[newX][newY] = 6
         
-    def execute(self, manhattans):
+    def execute(self, manhattans, maze):
         if self.current == self.goal: 
+            AdaptiveAStar.addPath(maze, [maze.startX, maze.startY], move)
+            # maze.print_maze()
             #print("REACHED THE GOAL")
             #print("Total nodes expanded {}".format(AdaptiveAStar.expandedNodes))
             return
         # Get shortest path based on maze that object perceived
         DummyMaze = self.copyMaze()
         DummyMaze.manhattans = manhattans
-
+        
         #if AStar.targNode != None: print("Cost: {}".format(AStar.targNode.step_cost))
         #for node in AStar.expandedArr:
         #    print(node.position)
@@ -64,6 +66,7 @@ class AdaptiveAStar:
         if (move): 
             nextX = move.position[0]
             nextY = move.position[1]
+            # maze.grid[nextX][nextY]=5
             walkable = self.real_maze.walkable(nextX, nextY)
             while (walkable):
                 # Mark current position to be empty
@@ -73,15 +76,19 @@ class AdaptiveAStar:
                 self.current[1] = nextY
                 # Mark walk step where object has moved
                 self.maze.grid[self.current[0]][self.current[1]] = 2
+                if maze.grid[nextX][nextY]!=2 and maze.grid[nextX][nextY]!=3:
+                    maze.grid[nextX][nextY]=5
                 # Take note of the current map
                 self.explore()
                 # Examine next move / Return if out of moves
                 if (not move.parent): 
                     if self.current == self.goal: 
-                        #self.maze.print_maze()
+                        # AdaptiveAStar.addPath(maze, [maze.startX, maze.startY], move)
+                        # self.maze.print_maze()
+                        # maze.print_maze()
                         #print("REACHED THE GOAL")
                         #print("Total nodes expanded {}".format(AdaptiveAStar.expandedNodes))
-                        return
+                        return move
                 move = move.parent
                 nextX = move.position[0]
                 nextY = move.position[1]
@@ -89,7 +96,7 @@ class AdaptiveAStar:
             # Execute until reach the goal OR not walkable (approach obstacles)
             #self.maze.print_maze()
             self.clearMazePath()
-            self.execute(DummyMaze.manhattans)
+            self.execute(DummyMaze.manhattans, maze)
             
         else:
             #print("No Solution")
@@ -122,4 +129,18 @@ class AdaptiveAStar:
                 if self.maze.grid[i][j] == 5:
                     self.maze.grid[i][j] = 0
         
+    #should print real shortest path in green, might be kind of off
+    def addPath(maze, initial, curNode):
+        # Visualize maze
+        if curNode == None: return
+        saveNode = curNode
+        while(curNode.position != initial):
+            AStar.pathNodes+=1
+            if (maze.grid[curNode.position[0]][curNode.position[1]] != 2 and maze.grid[curNode.position[0]][curNode.position[1]] != 3):
+                maze.grid[curNode.position[0]][curNode.position[1]] = 6
+            curNode = curNode.parent
+            if curNode == None: return
         
+        # reverse linkedlist and return
+        ptr_from_start = AStar.reversePath(saveNode)
+        return ptr_from_start
