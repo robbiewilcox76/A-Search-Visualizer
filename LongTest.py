@@ -9,7 +9,13 @@ import random
 
 
 ##file used to test min heap, give it a try and make sure it works - Robbie
-for i in range(50):
+
+aFor = 0
+aBack = 0
+reFor = 0
+reBack = 0
+ran = 50
+for i in range(ran):
     AStar.expandedNodes = 0
     maze_size = 101
     x = Maze(maze_size)
@@ -20,16 +26,39 @@ for i in range(50):
             lvl.append(0)
         visited.append(lvl)
 
-    ## Test RepeatedAStar
+    adaptForward = AdaptiveAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
+    repeatForward = RepeatedAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
 
-    find = AdaptiveAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
-    m = RepeatedAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
-    #print("\n")
-    #for i in range(x.height):
-    #    print(x.manhattans[i])
-    #
-    m.execute()
+    repeatForward.execute()
+    reFor += RepeatedAStar.expandedNodes
     AStar.expandedNodes = 0
-    find.execute(x.manhattans)
-print("Adaptive: {}".format(AdaptiveAStar.expandedNodes/50))
-print("Repeated: {}".format(RepeatedAStar.expandedNodes/50))
+    RepeatedAStar.expandedNodes = 0
+    AdaptiveAStar.expandedNodes = 0
+
+    #AStar.pathReset(x)
+    adaptForward.execute(x.manhattans)
+    aFor += AdaptiveAStar.expandedNodes
+    AStar.expandedNodes = 0
+    RepeatedAStar.expandedNodes = 0
+    AdaptiveAStar.expandedNodes = 0
+
+    #AStar.pathReset(x)
+    x.reverse()
+    adaptBackWard = AdaptiveAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
+    repeatBackward = RepeatedAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
+
+    repeatBackward.execute()
+    reBack += RepeatedAStar.expandedNodes
+    AStar.expandedNodes = 0
+    RepeatedAStar.expandedNodes = 0
+    AdaptiveAStar.expandedNodes = 0
+
+    #AStar.pathReset(x)
+    adaptBackWard.execute(x.manhattans)
+    aBack += AdaptiveAStar.expandedNodes
+
+
+print("Repeated forward: {}".format(reFor/ran))
+print("Repeated backward: {}".format(reBack/ran))
+print("Adapted forward: {}".format(aFor/ran))
+print("Adapted backward: {}".format(aBack//ran))

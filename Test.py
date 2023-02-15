@@ -50,13 +50,7 @@ for i in range(1):
         visited.append(lvl)
     vanilla_total += AStar.expandedNodes
     AStar.expandedNodes = 0
-    #RepeatedAStar([x.startX, x.startY], [x.targetX, x.targetY], x, 101).execute()
     forward_repeated_total += RepeatedAStar.expandedNodes
-    #RepeatedAStar.expandedNodes = 0
-    #x.print_maze()
-    #x.reverse()
-    #x.print_maze()
+for node in AStar.expandedArr:
+    print(node.position)
 print("Forward: {}\n Repeated: {}".format(vanilla_total, forward_repeated_total/50))
-print(len(AStar.expandedArr))
-for i in range(len(AStar.expandedArr)):
-    print(AStar.expandedArr[i])

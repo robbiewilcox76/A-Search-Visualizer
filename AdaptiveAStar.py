@@ -36,24 +36,27 @@ class AdaptiveAStar:
         
     def execute(self, manhattans):
         if self.current == self.goal: 
-            print("REACHED THE GOAL")
-            print("Total nodes expanded {}".format(AdaptiveAStar.expandedNodes))
+            #print("REACHED THE GOAL")
+            #print("Total nodes expanded {}".format(AdaptiveAStar.expandedNodes))
             return
         # Get shortest path based on maze that object perceived
         DummyMaze = self.copyMaze()
         DummyMaze.manhattans = manhattans
 
         #if AStar.targNode != None: print("Cost: {}".format(AStar.targNode.step_cost))
+        #for node in AStar.expandedArr:
+        #    print(node.position)
         for i in range(1, len(AStar.expandedArr)):
             #print("{}".format(AStar.targNode.step_cost - AStar.expandedArr[i].step_cost == DummyMaze.manhattans[AStar.expandedArr[i].position[0]][AStar.expandedArr[i].position[1]]))
-            DummyMaze.manhattans[AStar.expandedArr[i].position[0]][AStar.expandedArr[i].position[1]] = AStar.targNode.step_cost - AStar.expandedArr[i].step_cost
+            DummyMaze.manhattans[AStar.expandedArr[i].position[0]][AStar.expandedArr[i].position[1]] = AStar.targNode.step_cost - AStar.expandedArr[i].step_cost + 1
         AStar.expandedArr = []
         DummyVisited = self.newVisited()
 
-        #for i in range(len(DummyMaze.manhattans)):
-         #   print(DummyMaze.manhattans[i])
+       # for i in range(len(DummyMaze.manhattans)):
+       #     print(DummyMaze.manhattans[i])
+       # print("")
 
-        #print(manhattans == self.real_maze.manhattans)
+        #print(DummyMaze.manhattans == self.real_maze.manhattans)
         # move is pointer to shortest path linkedlist
         move = AStar.execute(self.current, self.goal, DummyMaze, DummyVisited)
         AdaptiveAStar.expandedNodes += AStar.expandedNodes
@@ -76,7 +79,7 @@ class AdaptiveAStar:
                 if (not move.parent): 
                     if self.current == self.goal: 
                         #self.maze.print_maze()
-                        print("REACHED THE GOAL")
+                        #print("REACHED THE GOAL")
                         #print("Total nodes expanded {}".format(AdaptiveAStar.expandedNodes))
                         return
                 move = move.parent
