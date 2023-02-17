@@ -66,7 +66,7 @@ class RepeatedAStar:
                 # Mark walk step where object has moved
                 self.maze.grid[self.current[0]][self.current[1]] = 2
                 if maze.grid[nextX][nextY]!=2 and maze.grid[nextX][nextY]!=3:
-                    maze.grid[nextX][nextY]=0
+                    maze.grid[nextX][nextY]=5
                 # Take note of the current map
                 self.explore()
                 # Examine next move / Return if out of moves
