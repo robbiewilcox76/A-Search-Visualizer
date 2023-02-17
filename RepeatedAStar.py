@@ -37,8 +37,8 @@ class RepeatedAStar:
     def execute(self, maze):
         manhattans = self.real_maze.manhattans
         if self.current == self.goal: 
-            #print("REACHED THE GOAL")
-            #print("Total nodes expanded {}".format(RepeatedAStar.expandedNodes))
+            # print("REACHED THE GOAL")
+            # print("Total nodes expanded {}".format(RepeatedAStar.expandedNodes))
             return
         # Get shortest path based on maze that object perceived
         DummyMaze = self.copyMaze()
@@ -52,8 +52,7 @@ class RepeatedAStar:
         #for i in range(DummyMaze.height):
         #    print(DummyMaze.manhattans[i])
         #return
-        AStar.expandedNodes = 0
-        self.visualizeAStar(move)
+        # self.visualizeAStar(move)
         if (move): 
             nextX = move.position[0]
             nextY = move.position[1]
@@ -67,22 +66,22 @@ class RepeatedAStar:
                 # Mark walk step where object has moved
                 self.maze.grid[self.current[0]][self.current[1]] = 2
                 if maze.grid[nextX][nextY]!=2 and maze.grid[nextX][nextY]!=3:
-                    maze.grid[nextX][nextY]=5
+                    maze.grid[nextX][nextY]=0
                 # Take note of the current map
                 self.explore()
                 # Examine next move / Return if out of moves
                 if (not move.parent): 
                     if self.current == self.goal: 
-                        #self.maze.print_maze()
-                        #print("REACHED THE GOAL")
-                        #print("Total nodes expanded {}".format(RepeatedAStar.expandedNodes))
+                        # self.maze.print_maze()
+                        # print("REACHED THE GOAL")
+                        # print("Total nodes expanded {}".format(RepeatedAStar.expandedNodes))
                         return move
                 move = move.parent
                 nextX = move.position[0]
                 nextY = move.position[1]
                 walkable = self.real_maze.walkable(nextX, nextY)
             # Execute until reach the goal OR not walkable (approach obstacles)
-            #self.maze.print_maze()
+            # self.maze.print_maze()
             self.clearMazePath()
             self.execute(maze)
             
@@ -96,7 +95,7 @@ class RepeatedAStar:
                 self.maze.grid[move.position[0]][move.position[1]] = 5
             move = move.parent
             
-        #self.maze.print_maze()
+        self.maze.print_maze()
     
     def copyMaze(self):
         dummyMaze = copy.deepcopy(self.maze)

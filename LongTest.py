@@ -14,11 +14,13 @@ aFor = 0
 aBack = 0
 reFor = 0
 reBack = 0
-ran = 50
+ran = 10
+MinHeap.mode = 2
 for i in range(ran):
     AStar.expandedNodes = 0
     maze_size = 101
     x = Maze(maze_size)
+    startManhattan = x.manhattans
     visited = []
     for i in range(x.height):
         lvl = []
@@ -43,6 +45,7 @@ for i in range(ran):
     AdaptiveAStar.expandedNodes = 0
 
     #AStar.pathReset(x)
+    x.manhattans = startManhattan
     x.reverse()
     adaptBackWard = AdaptiveAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
     repeatBackward = RepeatedAStar([x.startX, x.startY], [x.targetX, x.targetY], x, maze_size)
@@ -61,4 +64,4 @@ for i in range(ran):
 print("Repeated forward: {}".format(reFor/ran))
 print("Repeated backward: {}".format(reBack/ran))
 print("Adapted forward: {}".format(aFor/ran))
-print("Adapted backward: {}".format(aBack//ran))
+print("Adapted backward: {}".format(aBack/ran))

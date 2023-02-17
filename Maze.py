@@ -65,6 +65,17 @@ class Maze:
             self.grid.append(level)
         self.grid[goal[0]][goal[1]] = 3
         self.grid[initial[0]][initial[1]] = 2
+        self.startX = initial[0]
+        self.startY = initial[1]
+        self.targetX = goal[0]
+        self.targetY = goal[1]
+        
+        self.manhattans = []
+        for i in range(self.height): #101
+            lev = []
+            for j in range(self.height): #101
+                lev.append(abs(i-self.targetX)+ abs(j-self.targetY))
+            self.manhattans.append(lev)
 
 
     def check_walls(self, newMaze, x, y):

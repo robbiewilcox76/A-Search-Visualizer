@@ -1,8 +1,13 @@
 import math
 from Node import Node
 class MinHeap:
+    mode = 1 # default mode: choosing smaller g value
+    
     def __init__(self):
         self.arr = [Node([-1, -1], None, -1, -1)]
+        self.smaller_tie_break = 1
+        self.bigger_tie_break = 2
+        self.const = 110 # constant c larger than any possible g value
 
     def addNode(self, node: Node):
         idx = self.find(node)
@@ -25,25 +30,16 @@ class MinHeap:
         #print("-------------")
         
         while index*2 < len(self.arr):
-            # num = self.arr[index]
-            # if index*2 + 1 >= len(self.arr):
-            #     self.arr[index] = self.arr[index*2]
-            #     self.arr[index*2] = num
-            #     index = index*2
-            #     continue
-            # if self.arr[index*2].total_cost < self.arr[index*2 + 1].total_cost:
-            #     self.arr[index] = self.arr[index*2]
-            #     self.arr[index*2] = num
-            #     index = index*2
-            # else:
-            #     self.arr[index] = self.arr[index*2 + 1]
-            #     self.arr[index*2 + 1] = num
-            #     index = index*2 + 1
             child = index * 2 # child on left node
-            if (child + 1 < len(self.arr) and self.arr[child+1].total_cost < self.arr[child].total_cost):
+            if (child + 1 < len(self.arr) and 
+                (self.arr[child+1].total_cost < self.arr[child].total_cost 
+                 or self.special_smaller(self.arr[child+1], self.arr[child])
+                 )):
                 child += 1 #choose child on right node
             
-            if (self.arr[index].total_cost < self.arr[child].total_cost):
+            if ((self.arr[index].total_cost < self.arr[child].total_cost) 
+                or self.special_smaller(self.arr[index], self.arr[child])
+                ):
                 break
             num = self.arr[index]
             self.arr[index] = self.arr[child]
@@ -52,7 +48,9 @@ class MinHeap:
         return
 
     def swim(self, index):
-        while self.arr[index].total_cost < self.arr[index//2].total_cost:
+        while (self.arr[index].total_cost < self.arr[index//2].total_cost
+               or self.special_smaller(self.arr[index], self.arr[index//2])
+               ):
             num = self.arr[index]
             self.arr[index] = self.arr[index//2]
             self.arr[index//2] = num
@@ -73,6 +71,16 @@ class MinHeap:
            self.arr[index] = node
            self.swim(index)
         return
+    
+    def special_smaller(self, a, b):
+        if (self.mode == self.smaller_tie_break):
+            return (a.total_cost == b.total_cost and a.step_cost < b.step_cost)
+        else:
+            a_cost = self.const * a.total_cost - a.step_cost
+            b_cost = self.const * b.total_cost - b.step_cost
+            return (a.total_cost == b.total_cost and a_cost < b_cost)
+            
+            
 
     def toString(self):
         print("[")
