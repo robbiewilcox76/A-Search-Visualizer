@@ -32,7 +32,7 @@
         \end{enumerate}
         \item[2.] \textbf{The Effects of Ties}
             \begin{enumerate}
-                \item[] In the experiment, we conducted 50 random mazes and counted the average number of nodes expanded by Repeated A* using both tie breakers. The numbers are big difference and the tie breaker favoring smaller g(x) expands 100 times nodes more than the other one. [Figure.\ref{TieBreakerNumber}]
+                \item[] In the experiment, we conducted 50 random mazes and counted the average number of nodes expanded by Repeated A* using both tie breakers. The results have a very large difference as the tie breaker favoring smaller g(x) expands 100 times more nodes than its opposite. [Figure.\ref{TieBreakerNumber}]
                 
                 \begin{figure}[h!]
                     \centering
@@ -42,13 +42,13 @@
                 \end{figure}
                 
                 \item[] There is a significant difference in the tie breakers between favoring cells with larger g-values and favoring cells with smaller g-values. 
-                Tie-breaking favoring cells with the smaller g-values gives a large number of cells expanded pattern. Using this tie breaker, the algorithm seems to explore more unnecessary cells and less focus towards the target. On the other hand, the tie breaker favoring the larger g-values gives an intensively focus path toward the target and runs significantly faster. [Figure.\ref{tie-breaker}]
+                Tie-breaking favoring cells with the smaller g-values expands significantly more nodes. Using this tie breaker, the algorithm seems to explore more unnecessary cells and is less focused towards the target. On the other hand, the tie breaker favoring the larger g-values gives a far more focused path toward the target, and runs much faster as a result. [Figure.\ref{tie-breaker}]
                 
 
                 \item[] \textbf{Reason of the difference:}
-                Since the evaluation function is $f(x) = g(x) + h(x)$, in which g(x) is the distance how far the object has moved. favoring the smaller g(x) value whenever the evaluation values are equals ($f(x_1) = f(x_2)$) will lead the algorithm to explore the cells that are closer to the start position. Therefore, the exploring pattern looks alike the pattern of Breadth-First Search, since the algorithm prioritizes the cells closer to the start position.
-                \item[] Otherwise, algorithm favoring the larger g(x) will try to explore the cells that are farthest from the start position. Combining this with the heuristics, the algorithm will try to explore farthest cells and towards the target most.
-                \item[] In conclusion, it is obvious that using tie breaker favoring larger values of g(x) will result in faster and more focused A* algorithm.
+                Since the evaluation function is $f(x) = g(x) + h(x)$, where g(x) is the step cost, favoring the smaller g-value whenever the evaluation values are equals ($f(x_1) = f(x_2)$) will lead the algorithm to explore cells that are closer to the start position. Therefore, the exploration pattern looks like the pattern of Breadth-First Search, since the algorithm prioritizes the cells closer to the start position.
+                \item[] Otherwise, favoring larger g-values will explore the cells that are farthest from the start position. Combining this with the heuristic will result in the algorithm exploring cells farther from the start and towards the target.
+                \item[] In conclusion, it is obvious that using the tie breaker favoring larger values of g(x) will result in a faster and more focused A* algorithm.
                 
                 \begin{figure}[h!]
                     \centering
