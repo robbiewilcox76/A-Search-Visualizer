@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage[margin=0.5in]{geometry}
 \usepackage{graphicx}
+\usepackage{subcaption}
 
 \title{Rutgers CS 440 Homework 1}
 \author{Fulton Wilcox III, Dan Teytel, Long Tran}
@@ -30,7 +31,44 @@
             \end{enumerate}
         \end{enumerate}
         \item[2.] \textbf{The Effects of Ties}
-        
+            \begin{enumerate}
+                \item[] In the experiment, we conducted 50 random mazes and counted the average number of nodes expanded by Repeated A* using both tie breakers. The numbers are big difference and the tie breaker favoring smaller g(x) expands 100 times nodes more than the other one. [Figure.\ref{TieBreakerNumber}]
+                
+                \begin{figure}[h!]
+                    \centering
+                    \includegraphics[width=.4\linewidth]{tie-breaker-number.png}
+                    \caption{Comparison of Number of Nodes Expanded}
+                    \label{TieBreakerNumber}
+                \end{figure}
+                
+                \item[] There is a significant difference in the tie breakers between favoring cells with larger g-values and favoring cells with smaller g-values. 
+                Tie-breaking favoring cells with the smaller g-values gives a large number of cells expanded pattern. Using this tie breaker, the algorithm seems to explore more unnecessary cells and less focus towards the target. On the other hand, the tie breaker favoring the larger g-values gives an intensively focus path toward the target and runs significantly faster. [Figure.\ref{tie-breaker}]
+                
+
+                \item[] \textbf{Reason of the difference:}
+                Since the evaluation function is $f(x) = g(x) + h(x)$, in which g(x) is the distance how far the object has moved. favoring the smaller g(x) value whenever the evaluation values are equals ($f(x_1) = f(x_2)$) will lead the algorithm to explore the cells that are closer to the start position. Therefore, the exploring pattern looks alike the pattern of Breadth-First Search, since the algorithm prioritizes the cells closer to the start position.
+                \item[] Otherwise, algorithm favoring the larger g(x) will try to explore the cells that are farthest from the start position. Combining this with the heuristics, the algorithm will try to explore farthest cells and towards the target most.
+                \item[] In conclusion, it is obvious that using tie breaker favoring larger values of g(x) will result in faster and more focused A* algorithm.
+                
+                \begin{figure}[h!]
+                    \centering
+                    \begin{subfigure}{.4\textwidth}
+                        \centering
+                        \includegraphics[width=.4\linewidth]{smaller-tie-breaker.png}
+                        \caption{Tie breaker favoring smaller g-values}
+                        \label{fig:sub1}
+                    \end{subfigure}
+                    \begin{subfigure}{.4\textwidth}
+                        \centering
+                        \includegraphics[width=.4\linewidth]{larger-tie-breaker.png}
+                        \caption{Tie breaker favoring bigger g-values}
+                        \label{fig:sub1}
+                    \end{subfigure}
+                    \caption{Tie breakers on g-values}
+                    \label{tie-breaker}
+                \end{figure}
+                
+            \end{enumerate}
         \item[3.] \textbf{Forward vs. Backward}
             \begin{enumerate}
                 \item[] In the experiment, repeating forward A* expanded an average of 9702.88 nodes while repeating backwards A* expanded an average of 9351.14 nodes.  For this experiment, ties were broken in favor of cells with higher g values.  The fact that repeating forward A* ran slower than repeating backward A* must be a result of the mazes.  Since it is essentially the same algorithm with only the start and goals swapped, the only variant in the experiment is the makeup of the mazes, which were randomly generated.  Mazes with no solution may have been what caused the discrepancy as mazes with the the goal blocked off completely within a small corridor would take a very short time to run with repeating backward, while repeating forward would need to expand nearly every unblocked cell in the maze.
@@ -46,7 +84,7 @@
             
             Therefore, Manhattan distances are always the best cost to reach from start to goal out of all actions and states we can go.
 
-            For adaptive heurictics, by updating the new h values: 
+            For adaptive heuristics, by updating the new h values: 
             $h_{new}(s) = g(s_{goal}) - g(s)$ \par
 
             $h_{new}(s)$ still satisfies admissibility by not overestimate the path costs.
