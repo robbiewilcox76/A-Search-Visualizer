@@ -62,7 +62,7 @@ class AdaptiveAStar:
         # move is pointer to shortest path linkedlist
         move = AStar.execute(self.current, self.goal, DummyMaze, DummyVisited)
         AdaptiveAStar.expandedNodes += AStar.expandedNodes
-        self.visualizeAStar(move)
+        # self.visualizeAStar(move)
         if (move): 
             nextX = move.position[0]
             nextY = move.position[1]

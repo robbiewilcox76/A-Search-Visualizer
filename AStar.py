@@ -1,4 +1,3 @@
-from States import States
 from MinHeap import MinHeap
 from Maze import Maze
 from Node import Node
@@ -30,12 +29,12 @@ class AStar:
                 #    print(AStar.expandedArr[i].position)
                 #print(AStar.targNode.position)
                 #print(goal)
-                ##print("Number of nodes expanded: {}".format(AStar.expandedNodes))
-                ##print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
+                print("Number of nodes expanded: {}".format(AStar.expandedNodes))
+                print("Number of nodes in shortest path: {}".format(AStar.pathNodes))
                 # for move in moves:
                 #     print('(', move.position[0], ',', move.position[1], ')')
                 # print("Maze from AStar: \n")
-                # maze.print_maze()
+                maze.print_maze()
                 return move
             counter += 1
             AStar.expand(visited, current, maze, heap, counter) #expand from spot
